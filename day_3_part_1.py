@@ -7,7 +7,7 @@ import numpy
 
 
 def main():
-    max_n = 1000  # large enough for now
+    max_n = 1001  # large enough for now
     canvas = -numpy.ones((max_n, max_n), dtype=numpy.dtype('int'))
     for line in sys.stdin:
         if not line:
