@@ -32,18 +32,18 @@ def main():
     for input_step in input_steps:
         steps[input_step[0]]['unlocks'].append(input_step[1])
         steps[input_step[1]]['awaits'].add(input_step[0])
-    pending = queue.PriorityQueue()  # (-min_cost, curr_time, something_arbitrary (for helping the sort), step)
+    pending = queue.PriorityQueue()  # (-min_cost, curr_time, step_name, step)
     for step in steps.values():
         if not step['awaits']:
             pending.put((-get_min_cost(step, steps), 0, step['name'], step))
-    in_progress = queue.PriorityQueue()  # (finish_time, step)
+    in_progress = queue.PriorityQueue()  # (finish_time, step_name, step)
     curr_time = 0
     while pending.qsize() > 0 or in_progress.qsize() > 0:
         while in_progress.qsize() < n_worker and pending.qsize() > 0:
             _, _, _, step_next = pending.get()
-            in_progress.put((curr_time + step_next['cost'], step_next))
+            in_progress.put((curr_time + step_next['cost'], step_next['name'], step_next))
         if in_progress.qsize() > 0:
-            curr_time, step_finished = in_progress.get()
+            curr_time, _, step_finished = in_progress.get()
             for unlocked in step_finished['unlocks']:
                 steps[unlocked]['awaits'].remove(step_finished['name'])
                 if not steps[unlocked]['awaits']:
