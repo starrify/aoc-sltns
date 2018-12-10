@@ -15,6 +15,9 @@ def get_min_cost(step, steps):
 
 
 def main():
+    # XXX: This is indeed an INCORRECT solution:
+    # - Task description: "If multiple steps are available, workers should still begin them in alphabetical order."
+    # - This solution: Aims a minimal total time cost, and chooses alphabetically if there're still multiple options.
     n_worker = 5
     input_steps = [
         re.findall('Step (.) .* before step (.) ', line)[0]
