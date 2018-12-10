@@ -94,12 +94,11 @@ defmodule Day9 do
         rem(marble_id, 23) != 0 ->
           {rot_r(insert_r(rot_r(circular_list), marble_id)), player_score}
         rem(marble_id, 23) == 0 ->
-          player_score = List.update_at(player_score, player, fn score -> score + marble_id end)
           circular_list = Enum.reduce(1..7, circular_list, fn(_, circular_list) ->
             rot_l(circular_list)
           end)
           {removed, circular_list} = pop_r(circular_list)
-          player_score = List.update_at(player_score, player, fn score -> score + removed end)
+          player_score = List.update_at(player_score, player, fn score -> score + removed + marble_id end)
           {circular_list, player_score}
       end
     end) |> (fn {_, player_score} -> player_score end).() |> Enum.max
