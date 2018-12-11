@@ -10,13 +10,9 @@ def main():
         for x in re.findall('\d+', sys.stdin.read().strip())
     ]
     n_marble *= 100
-    playground = {
-        0: {
-            'id': 0,
-            'prec': 0,  # counter-clockwise
-            'succ': 0,  # clockwise
-        }
-    }
+    playground = [
+        [0, 0]  # prec (counter-clockwise), succ (clockwise)
+    ] + [None for _ in range(n_marble)]
     current = 0
     player_score = [0 for _ in range(n_player + 1)]
     player = 0
@@ -24,23 +20,19 @@ def main():
         player %= n_player
         player += 1
         if marble % 23:
-            current = playground[current]['succ']
-            playground[marble] = {
-                'id': marble,
-                'prec': current,
-                'succ': playground[current]['succ'],
-            }
-            playground[playground[current]['succ']]['prec'] = marble
-            playground[current]['succ'] = marble
+            current = playground[current][1]
+            playground[marble] = [current, playground[current][1]]
+            playground[playground[current][1]][0] = marble
+            playground[current][1] = marble
             current = marble
         else:
             player_score[player] += marble
             for _ in range(7):
-                current = playground[current]['prec']
+                current = playground[current][0]
             player_score[player] += current
-            playground[playground[current]['succ']]['prec'] = playground[current]['prec']
-            playground[playground[current]['prec']]['succ'] = playground[current]['succ']
-            current = playground[current]['succ']
+            playground[playground[current][1]][0] = playground[current][0]
+            playground[playground[current][0]][1] = playground[current][1]
+            current = playground[current][1]
     print(max(player_score))
 
 
