@@ -87,6 +87,11 @@ def main():
         for pos in water_grids
         if 0 < pos[0] < len(canvas) - 1
     ]))
+    print(len([
+        pos
+        for pos, water in water_grids.items()
+        if 0 < pos[0] < len(canvas) - 1 and not water['freedom']
+    ]))
 
 
 if __name__ == '__main__':
