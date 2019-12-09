@@ -28,9 +28,12 @@ def run_tape(tape):
             opcode = tape[pc] % 100
             io_modes, func = opcodes[opcode]
             new_pc = pc + 1 + len([x for x in io_modes if x != 'p'])
-            ref_modes = itertools.chain(str(tape[pc] // 100)[::-1], itertools.repeat('0'))
+            io_ref_modes = list(zip(
+                io_modes,
+                itertools.chain(str(tape[pc] // 100)[::-1], itertools.repeat('0'))
+            ))
             operands = []
-            for idx, (io_mode, ref_mode) in enumerate(zip(io_modes, ref_modes)):
+            for idx, (io_mode, ref_mode) in enumerate(io_ref_modes):
                 if io_mode == 'i':
                     operand = tape[pc + idx + 1]
                     if ref_mode == '0':
@@ -47,7 +50,7 @@ def run_tape(tape):
                 # shortcut for lazy people..
                 outcome = [outcome]
             outcome_idx = 0
-            for idx, (io_mode, ref_mode) in enumerate(zip(io_modes, ref_modes)):
+            for idx, (io_mode, ref_mode) in enumerate(io_ref_modes):
                 value = outcome[outcome_idx]
                 if io_mode == 'o':
                     # position mode
