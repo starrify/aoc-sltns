@@ -55,7 +55,7 @@ def run_tape(tape, tape_io=None):
                         # immediate mode
                         pass
                     else:
-                        raise ValueError('Invalid ref mode %s at %s' % (ref_mode))
+                        raise ValueError('Invalid ref mode %s at %s' % (ref_mode, pc))
                     operands.append(operand)
             outcome = func(*operands)
             if isinstance(outcome, int) or outcome is None:
