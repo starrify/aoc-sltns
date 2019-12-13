@@ -5,6 +5,9 @@ import collections
 import operator
 import itertools
 
+import numpy
+import matplotlib.pyplot
+
 
 class EndExecution(BaseException):
     pass
@@ -115,6 +118,12 @@ def main():
     process = TapeProcess(tape, init_input=[1])
     [_ for _ in process.run_tape()]
     print(list(process.tiles.values()).count(2))
+    shape = [max(x[axis] for x in process.tiles) + 1 for axis in range(2)]
+    canvas = numpy.zeros(shape=shape, dtype=int)
+    for k, v in process.tiles.items():
+        canvas[k] = v
+    matplotlib.pyplot.matshow(canvas.transpose())
+    matplotlib.pyplot.show()
 
 
 if __name__ == '__main__':
