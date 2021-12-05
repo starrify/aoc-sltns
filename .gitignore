@@ -1,6 +1,10 @@
 ## Misc
 
 day_*_input.txt
+*.in
+*.input
+*.html
+*.sample
 
 ## Vim
 
